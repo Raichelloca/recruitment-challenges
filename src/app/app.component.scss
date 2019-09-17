@@ -1,0 +1,38 @@
+
+
+th{
+    font: SourceSansPro;
+    size: 14px;
+    font-weight: normal !important;
+}
+
+thead{
+    color: #213d8f;
+    font: SourceSansPro;
+    font-weight: bold !important;
+    size: 14px
+}
+.transactionSelected{
+    background-color: #e8ebf3;
+}
+
+.detail{
+    padding-left: 80px !important;
+    background-color: #e8ebf3;
+    font: SourceSansPro;
+    font-weight: normal !important;
+    size: 16px;
+}
+
+select{
+    color: #1db9de;
+}
+
+select:focus {
+    background-color: #e8ebf3;
+    color: #213d8f;
+}
+
+h1{
+    padding: 30px;
+}

@@ -1,21 +1,88 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
+<div style="text-align:center; background-color: #e8ebf3;">
   <h1>
-    Welcome to {{ title }}!
+    {{ title }}
   </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
 
+<br/>
+<div class="container">
+  <div class="row">
+    <div class="col-7"></div>
+    <div class="col-5">
+
+      <form [formGroup]="selectForm" (ngSubmit)="searchOptions()">
+          <div class="row">
+            <div class="col-4">
+              <select class="custom-select" class="form-control" formControlName="action">
+                <option value="default" disabled>Transaction Type</option>
+                <option *ngFor="let action of listAction" [value]="action">{{action | titlecase}}</option>
+              </select>
+            </div>
+            <div class="col-4">
+              <select class="form-control" formControlName="currencyCode">
+                  <option value="default" disabled>Currency</option>
+                  <option *ngFor="let currencyCode of listCurrencyCode"  [value]="currencyCode">{{currencyCode}}</option>
+                </select>
+            </div>
+            <div class="col-2">
+                <button  class="btn btn-success" type="submit">Submit</button>
+            </div>
+            <div class="col-2">
+              <button  class="btn btn-info" type="submit" (click)="clear()">Clear</button>
+            </div>
+          </div>
+      </form>
+    </div>
+  </div>
+  <br/>
+  <div class="row">
+    <table class="table table-light table-bordered table-hover">
+      <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Brand</th>
+            <th scope="col">Last 4 digits</th>
+            <th scope="col">Transaction type</th>
+            <th scope="col">Amont</th>
+            <th scope="col">Currency</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let transaction of listTransactions" >
+        <tr (click)="openDetalle(transaction)" [ngClass]="transaction.isSelected? 'transactionSelected': ''">   
+          <th>{{transaction.card.holderName}}</th>
+          <th>{{transaction.brandId == 1060? "Diners Club": (transaction.brandId == 1060? "VISA": "MasterCard")}}</th>
+          <th>XXXX {{transaction.card.lastFourDigits}}</th>
+          <th>{{transaction.action | titlecase}}</th>
+          <th>{{transaction.amount | number:'3.2'}}</th>
+          <th>{{transaction.currencyCode}}</th>
+        </tr>
+        
+        <tr class="detail" *ngIf="transaction.isSelected">
+          <td colspan="6">
+            <div class="row">
+              <div class="col-2" style="color: #213d8f;">Id:</div>
+              <div class="col-4">{{transaction.id}}</div>
+              <div class="col-2" style="color: #213d8f;">First 6 Digits:</div>
+              <div class="col-4">{{transaction.card.firstSixDigits}} XXXX</div>
+            </div>
+            <div class="row">
+                <div class="col-2" style="color: #213d8f;">Tracking Code: </div>
+                <div class="col-4">{{transaction.trackingCode}}</div>
+                <div class="col-2" style="color: #213d8f;">Expiry Month:</div>
+                <div class="col-4">{{transaction.card.expiryMonth}}</div>
+              </div>
+              <div class="row">
+                  <div class="col-2" style="color: #213d8f;">Brand Id:</div>
+                  <div class="col-4">{{transaction.brandId}}</div>
+                  <div class="col-2" style="color: #213d8f;">Expiry Year:</div>
+                  <div class="col-4">{{transaction.card.expiryYear}}</div>
+                </div>
+              </td>
+          </tr>
+      </tbody>
+    </table>  
+  </div>
+</div>
+
+</div>
 <router-outlet></router-outlet>
