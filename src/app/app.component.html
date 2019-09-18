@@ -7,20 +7,20 @@
 <br/>
 <div class="container">
   <div class="row">
-    <div class="col-7"></div>
-    <div class="col-5">
+    <div class="col-6"></div>
+    <div class="col-6">
 
       <form [formGroup]="selectForm" (ngSubmit)="searchOptions()">
           <div class="row">
             <div class="col-4">
-              <select class="custom-select" class="form-control" formControlName="action">
-                <option value="default" disabled>Transaction Type</option>
+              <select class="custom-select" class="form-control" formControlName="action" [value]='1'>
+                <option selected value="1" disabled>Transaction Type</option>
                 <option *ngFor="let action of listAction" [value]="action">{{action | titlecase}}</option>
               </select>
             </div>
-            <div class="col-4">
-              <select class="form-control" formControlName="currencyCode">
-                  <option value="default" disabled>Currency</option>
+            <div class="col-3">
+              <select class="form-control" formControlName="currencyCode" [value]='2'>
+                  <option selected value="2" disabled>Currency</option>
                   <option *ngFor="let currencyCode of listCurrencyCode"  [value]="currencyCode">{{currencyCode}}</option>
                 </select>
             </div>
@@ -28,7 +28,7 @@
                 <button  class="btn btn-success" type="submit">Submit</button>
             </div>
             <div class="col-2">
-              <button  class="btn btn-info" type="submit" (click)="clear()">Clear</button>
+              <button  class="btn btn-info" type="button" (click)="clear()">Clear</button>
             </div>
           </div>
       </form>
@@ -39,7 +39,7 @@
     <table class="table table-light table-bordered table-hover">
       <thead>
         <tr>
-            <th scope="col">Name</th>
+            <th scope="col" sortable-column="card.holderName">Name</th>
             <th scope="col">Brand</th>
             <th scope="col">Last 4 digits</th>
             <th scope="col">Transaction type</th>
@@ -47,7 +47,7 @@
             <th scope="col">Currency</th>
         </tr>
       </thead>
-      <tbody *ngFor="let transaction of listTransactions" >
+      <tbody *ngFor="let transaction of listTransactions | paginate: { itemsPerPage: 4, currentPage: p }" >
         <tr (click)="openDetalle(transaction)" [ngClass]="transaction.isSelected? 'transactionSelected': ''">   
           <th>{{transaction.card.holderName}}</th>
           <th>{{transaction.brandId == 1060? "Diners Club": (transaction.brandId == 1060? "VISA": "MasterCard")}}</th>
@@ -84,5 +84,11 @@
   </div>
 </div>
 
+<div class="row">
+  <div class="col-4"></div>
+  <div class="col-4">
+    <pagination-controls (pageChange)="p = $event"> </pagination-controls>
+  </div>
+</div>
 </div>
 <router-outlet></router-outlet>
